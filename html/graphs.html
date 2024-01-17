@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script rel="text/javascript" src="../js/main.js" defer></script>
+    <script rel="text/javascript" src="../js/graph.js" defer></script>
+</head>
+
+<body>
+
+    <div align="center" style="margin-bottom: 50px;">
+        <!-- <button class="button">Home</button> -->
+        <button class="button">Home</button>
+        <button class="button">Pantry</button>
+        <button class="button">Recipes</button>
+        <button class="button">Settings</button>
+    </div>
+
+    <div align="center">
+        <label for="GraphType">Select Graph Type</label>
+        <select name="GraphType" id="GraphType" onselect="">
+            <option selected value="Calories">Calories</option>
+            <option value="Weight">Weight</option>
+            <option value="Nutrition">Nutrition</option>
+        </select>
+        <label for="LineBar">Select Line or Bar</label>
+        <select name="LineBar" id="LineBar" onselect="">
+            <option selected value="Bar">Bar</option>
+            <option value="Line">Line</option>
+        </select>
+        <div>
+
+            <label for="DateBegin">Choose Beginning Date (of Graph)</label>
+            <input type="date" id="DateBegin" name="DateBegin" >
+
+            <label for="DateEnd">Choose Ending Date (of Graph)</label>
+            <input type="date" id="DateEnd" name="DateEnd">
+        </div>
+
+
+
+        <button class="button" onclick="ChangeGraph()">Submit Graph Changes</button>
+
+    </div>
+    <div>
+        <p id="GraphStatus" align="center" style="visibility:hidden">"Ending date" of graph can't be before "Beginning Date"</p>
+        <canvas id="myChart"></canvas>
+    </div>
+</body>
+
+</html>
