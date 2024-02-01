@@ -21,7 +21,7 @@ var CalorieDataset = [{
   borderWidth: 1,
 }];
 InitializeVars();
-const myChart = InitializeGraph();
+var myChart = InitializeGraph();
 
 function InitializeGraph()
 {
@@ -156,6 +156,24 @@ function ChangeGraph()
     }
     //console.log("end of func?");
     myChart.update();
+    myChart.destroy();
+    myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [MONTH+'\\'+DAY],
+        datasets: [{
+          label: 'Calorie Data',
+          data: [1000],
+          borderWidth: 1,
+        }]},
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
 }
 
 function getDate()
