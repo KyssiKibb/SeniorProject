@@ -13,4 +13,18 @@
     font-size: 80px;
     margin: 4px 50px;
     cursor: pointer;
-  }
+    }
+.listContainer {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    /* 100% height of the viewport */
+    height: 100px;
+    
+    }
+.IngList {
+        background-color: burlywood;
+        height: 150px;
+        width: 200px;
+        font-size:larger;
+        
+    }

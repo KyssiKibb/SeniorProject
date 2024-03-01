@@ -1,16 +1,17 @@
-var meal_ingredients =[];
+const MealName = document.getElementById("mealName");
+const IngList = document.getElementById("IngredList");
+const SelectedIngList = document.getElementById("SelectedIngredList");
+const MealList = document.getElementById("MealList");
 
-
-class Meal
+async function getMeal()
 {
-    Meal(){}
+    fetch(`http://localhost:5500/searchMeal?search=${IngName.value}`)
+    .then(response => response.json())
+    .then(ingredient => console.log(ingredient))
+    .catch(err=> console.log(err));
+}
 
-
-    CreateMeal()
-    {
-        //pull all of the data from meal creation screen to see if we have everything required that we need
-        //query database to see if the name is already taken
-        //if taken, display error message
-        //else, insert data into database
-    }
+function AddSelectedIngredients() 
+{
+    console.log(IngList.value);
 }

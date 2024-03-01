@@ -21,13 +21,14 @@ var CalorieDataset = [{
   borderWidth: 1,
 }];
 InitializeVars();
+const MONTH = curdate[5] + curdate[6];
+const DAY = curdate[8] + curdate[9];
 var myChart = InitializeGraph();
 
 function InitializeGraph()
 {
   console.log(curdate);
-  const MONTH = curdate[5] + curdate[6];
-  const DAY = curdate[8] + curdate[9];
+
   
   return new Chart(ctx, {
     type: 'bar',
@@ -142,38 +143,71 @@ function ChangeGraph()
       }
       if(GRAPHTYPE.value == "Calories")
       {
-
+        myChart.destroy();
+        myChart = new Chart(ctx, {
+          type: `${LINEBAR.value.toLowerCase()}`,
+          data: {
+            labels: Labels,
+            datasets: [{
+              label: 'Calorie Data',
+              data: CalorieData,
+              borderWidth: 1,
+            }]},
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
       }
       else if (GRAPHTYPE.value == "Nutrition")
       {
-
+        myChart.destroy();
+        myChart = new Chart(ctx, {
+          type: `${LINEBAR.value.toLowerCase()}`,
+          data: {
+            labels: Labels,
+            datasets: [{
+              label: 'NutritionData',
+              data: NutritionData,
+              borderWidth: 1,
+            }]},
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
       }
       else
       {
-
+        myChart.destroy();
+        myChart = new Chart(ctx, {
+          type: `${LINEBAR.value.toLowerCase()}`,
+          data: {
+            labels: Labels,
+            datasets: [{
+              label: 'Weight Data',
+              data: WeightData,
+              borderWidth: 1,
+            }]},
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
       }
 
     }
-    //console.log("end of func?");
     myChart.update();
-    myChart.destroy();
-    myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: [MONTH+'\\'+DAY],
-        datasets: [{
-          label: 'Calorie Data',
-          data: [1000],
-          borderWidth: 1,
-        }]},
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+
 }
 
 function getDate()

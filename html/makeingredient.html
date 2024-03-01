@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counter App</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <script type="text/javascript" src="../js/ingredient.js" defer></script>
 </head>
 <body>
@@ -19,34 +19,45 @@
     <div align="right">
         
     </div>
-    <label for="ingredientName">Name of Ingredient:</label>
-    <input type="text" id="ingredientName" name="ingredientName"><br><br>
+    <h5>Required:</h5>
 
-    <label for="servingSize">servingSize(Cups):</label>
-    <input type="text" id="servingSize" name="servingSize"><br><br>
+    <label for="ingredientName">Name of Ingredient:</label>
+    <input type="text" id="ingredientName" name="ingredientName" value="" placeholder="Type Name Here" required><br><br>
+    
+    <label for="ServingSize">Serving Size (Cups):</label>
+    <input type="number" id="ServingSize" name="ServingSize" placeholder="0" step=0.01 required><br><br>
 
     <label for="Calories">Calories:</label>
-    <input type="text" id="Calories" name="Calories"><br><br>
+    <input type="number" id="Calories" name="Calories" placeholder="0" step=1 min=0 required><br><br>
 
-    <label for="Fat">Fat(%dv):</label>
-    <input type="text" id="Fat" name="Fat"><br><br>
+    <h5>Optional:</h5>
 
-    <label for="Cholesterol">Cholesterol(%dv):</label>
-    <input type="text" id="Cholesterol" name="Cholesterol"><br><br>
+    <label for="Fat">Fat (%dv):</label>
+    <input type="number" id="Fat" name="Fat" placeholder="0" step="1" min="0"><br><br>
 
-    <label for="Sodium">Sodium(%dv):</label>
-    <input type="text" id="Sodium" name="Sodium"><br><br>
+    <label for="Cholesterol">Cholesterol (%dv):</label>
+    <input type="number" id="Cholesterol" name="Cholesterol" placeholder="0" step="1" min="0"><br><br>
 
-    <label for="Carbs">Carbs(%dv):</label>
-    <input type="text" id="Carbs" name="Carbs"><br><br>
+    <label for="Sodium">Sodium (%dv):</label>
+    <input type="number" id="Sodium" name="Sodium" placeholder="0" step="1" min="0"><br><br>
 
-    <label for="Protein">Protein(%dv):</label>
-    <input type="text" id="Protein" name="Protein"><br><br>
+    <label for="Carbs">Carbs (%dv):</label>
+    <input type="number" id="Carbs" name="Carbs" placeholder="0" step="1" min="0"><br><br>
 
-    <button onclick="basicreq()">do request</button>
+    <label for="Protein">Protein (%dv):</label>
+    <input type="number" id="Protein" name="Protein" placeholder="0" step="1" min="0"><br><br>
 
-    <div align="center">
-
+    <button onclick="getIng()">Get Specified Ingredient</button>
+    <button onclick="CreateIngredient()" >Create Ingredient</button>
+    <button onclick="GetIngredients()">Pull Ingredients From Database</button>
+    <button onclick="DeleteIngredient()">Delete Selected Ingredient</button>
+    <div>
+        <label for="IngredList">Current Ingredients</label>
+    </div>
+    <div>
+        <select class="IngList" id="IngredList" size="10">
+            <option value="" selected disabled hidden>Select Delete</option>
+        </select>
     </div>
 
 </body>

@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counter App</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="text/javascript" src="../js/ingredient.js" defer></script>
+    <script type="text/javascript" src="../js/meal.js" defer></script>
 </head>
 <body>
     <div align="center" style="margin-bottom: 50px;">
@@ -16,27 +18,49 @@
         <button class="button">Settings</button>
     </div>
     <div align="right">
-        <button class="button" style="font-size: 20px;">Add Ingredient</button>
         
     </div>
+    <h5>Required:</h5>
 
-    <div align="center" style="margin-bottom: 50px;">
-        <h1>Ingredients</h1>
-        <table style="font-size: 50px; border: 1px;border-color:black">
-            <tr>
-                <th>Apple</th>
-                <th>Nutrition stuff</th>
-            </tr>
-            <tr>
-                <th>Pear</th>
-                <th>Nutrition stuff</th>
-            </tr>
-            <tr>
-                <th>Thyme</th>
-                <th>Nutrition stuff</th>
-            </tr>
-        </table>
+    <label for="mealName">Name of Meal:</label>
+    <input type="text" id="mealName" name="mealName" value="" placeholder="Type Name Here" required><br><br>
+
+    <div>
+        <label for="IngredList">List of Ingredients</label>
     </div>
+    <div>
+        <select class="IngList" id="IngredList" size="10" multiple>
+            <option value="" selected disabled hidden>Select Delete</option>
+        </select>
+    </div>
+
+    <button onclick="AddSelectedIngredients()">Add Ingredient(s)</button>
+
+    <div>
+        <label for="SelectedIngredList">Selected Ingredient(s)</label>
+    </div>
+    <div>
+        <select class="IngList" id="SelectedIngredList" size="10" multiple>
+            <option value="" selected disabled hidden>Select Delete</option>
+        </select>
+    </div>
+
+    <button onclick="">Remove Ingredient(s)</button>
+
+
+    <div>
+        <label for="MealList">List of Meals</label>
+    </div>
+    <div>
+        <select class="IngList" id="MealList" size="10" multiple>
+            <option value="" selected disabled hidden>Select Delete</option>
+        </select>
+    </div>
+
+    <button onclick="">Get Specified Meal</button>
+    <button onclick="" >Create Meal</button>
+    <button onclick="">Pull Meals From Database</button>
+    <button onclick="">Delete Selected Meal</button>
 
 </body>
 </html>
