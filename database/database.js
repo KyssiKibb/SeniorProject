@@ -164,9 +164,51 @@ class A{
     return rows;
   }
 
+  async GetMeal(name) {
+    const queryString = `SELECT * FROM \`${ProjName}.${datasetId}.${MealsTableID}\` WHERE name='${name}' LIMIT 1`;
+  
+    const options = {
+      query: queryString,
+      location: 'US',
+    };
+  
+    // Run the query as a job
+    const [job] = await bigquery.createQueryJob(options);
+    //console.log(`Job ${job.id} started.`);
+  
+    // Wait for the query to finish
+    const [rows] = await job.getQueryResults();
+  
+    // Print the results
+    // console.log('Rows:');
+    // rows.forEach(row => console.log(row.name));
+    return rows;
+  }
+
 
   async DeleteIngredient(name) {
     const queryString = `DELETE FROM \`${ProjName}.${datasetId}.${IngredientTableID}\` WHERE name='${name}'`;
+  
+    const options = {
+      query: queryString,
+      location: 'US',
+    };
+  
+    // Run the query as a job
+    const [job] = await bigquery.createQueryJob(options);
+    //console.log(`Job ${job.id} started.`);
+  
+    // Wait for the query to finish
+    const [rows] = await job.getQueryResults();
+  
+    // Print the results
+    // console.log('Rows:');
+    // rows.forEach(row => console.log(row.name));
+    return rows;
+  }
+
+  async DeleteMeal(name) {
+    const queryString = `DELETE FROM \`${ProjName}.${datasetId}.${MealsTableID}\` WHERE name='${name}'`;
   
     const options = {
       query: queryString,
@@ -207,9 +249,66 @@ class A{
     // rows.forEach(row => console.log(row.name));
     return rows;
   }
+
+  async CreateMeal(name,servingsize,calories,fat,cholesterol,sodium,carbs,protein,
+    ingredients,ingredientservings)
+  {
+    var queryString = `INSERT INTO \`${ProjName}.${datasetId}.${MealsTableID}\` VALUES('${name}',${servingsize},${calories},${fat},${cholesterol},${sodium},${carbs},${protein}`;
+    for(var i = 0; i < 20; ++i)
+    {
+      if(i < ingredients.length)
+      {
+        queryString += `,'${ingredients[i]}',${ingredientservings[i]}`;
+      }
+      else
+      {
+        queryString += `,NULL,NULL`;
+      }
+    }
+    queryString += ')';
+
+    const options = {
+      query: queryString,
+      location: 'US',
+    };
+  
+    // Run the query as a job
+    const [job] = await bigquery.createQueryJob(options);
+    //console.log(`Job ${job.id} started.`);
+  
+    // Wait for the query to finish
+    const [rows] = await job.getQueryResults();
+  
+    // Print the results
+    // console.log('Rows:');
+    // rows.forEach(row => console.log(row.name));
+    return rows;
+  }
+
+  async UpdateIngredient(name, servingsize, calories, fat=0,cholesterol=0,sodium=0,carbs=0,protein=0)
+  {
+    const queryString = `UPDATE \`${ProjName}.${datasetId}.${IngredientTableID}\` SET servingsize=${servingsize},calories=${calories},fat=${fat},cholesterol=${cholesterol},sodium=${sodium},carbs=${carbs},protein=${protein} WHERE name='${name}'`;
+    
+    const options = {
+      query: queryString,
+      location: 'US',
+    };
+  
+    // Run the query as a job
+    const [job] = await bigquery.createQueryJob(options);
+    //console.log(`Job ${job.id} started.`);
+  
+    // Wait for the query to finish
+    const [rows] = await job.getQueryResults();
+  
+    // Print the results
+    // console.log('Rows:');
+    // rows.forEach(row => console.log(row.name));
+    return rows;
+  }
 }
 
-console.log("blah");
+//console.log("blah");
 //QueryIng("potato");
 //createTable();
 module.exports = {A};

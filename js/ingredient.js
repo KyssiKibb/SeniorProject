@@ -8,6 +8,18 @@ const Sodium = document.getElementById("Sodium");
 const Carbs = document.getElementById("Carbs");
 const Protein = document.getElementById("Protein");
 
+const DisplayedIngName = document.getElementById("DisplayedName");
+const DisplayedServingSize = document.getElementById("DisplayedServ");
+const DisplayedCalories = document.getElementById("DisplayedCal");
+const DisplayedFat = document.getElementById("DisplayedFat");
+const DisplayedCholesterol = document.getElementById("DisplayedChol");
+const DisplayedSodium = document.getElementById("DisplayedSodi");
+const DisplayedCarbs = document.getElementById("DisplayedCarb");
+const DisplayedProtein = document.getElementById("DisplayedProt");
+
+const SelectedIng = document.getElementById("IngredList");
+
+
 
 
 function VerifyWord(word)
@@ -19,10 +31,48 @@ function VerifyWord(word)
 
 async function getIng()
 {
+    console.log(IngName.value);
     fetch(`http://localhost:5500/searchIngredient?search=${IngName.value}`)
     .then(response => response.json())
-    .then(ingredient => console.log(ingredient))
+    .then(ingredient => console.log(ingredient[0]))
     .catch(err=> console.log(err));
+}
+
+async function getIngred(name)
+{
+    fetch(`http://localhost:5500/searchIngredient?search=${name}`)
+    .then(response => response.json())
+    .then(ingredient => {return ingredient[0];})
+    .catch(err=> console.log(err));
+}
+
+async function DisplayIng()
+{
+    
+    if(SelectedIng.value == "") //nothing selected
+    {
+        alert("You haven't selected an ingredient to display");
+        return;
+    }
+    else
+    {
+        console.log(`Searching for: ${SelectedIng.value}`)
+        fetch(`http://localhost:5500/searchIngredient?search=${SelectedIng.value}`)
+        .then(response => response.json())
+        .then((ingredient) => {
+            console.log(ingredient[0]);
+            DisplayedIngName.innerHTML = ingredient[0].name;
+            DisplayedServingSize.innerHTML = ingredient[0].servingsize;
+            DisplayedCalories.innerHTML = ingredient[0].calories;
+            DisplayedFat.innerHTML = ingredient[0].fat;
+            DisplayedCholesterol.innerHTML = ingredient[0].cholesterol;
+            DisplayedSodium.innerHTML = ingredient[0].sodium;
+            DisplayedCarbs.innerHTML = ingredient[0].carbs;
+            DisplayedProtein.innerHTML = ingredient[0].protein;
+        })
+        .catch(err=> console.log(err));
+    }
+
 }
 
 async function CreateIngredient() {
@@ -125,7 +175,7 @@ async function CreateIngredient() {
                 fetch(`http://localhost:5500/CreateIng?name=${IngName.value}&servingsize=${ServSize}&calories=${cal}&fat=${fat}&cholesterol=${cholesterol}&sodium=${sodium}&carbs=${carbs}&protein=${protein}`)
                 .then(async() => {
                     setTimeout(()=>{},1000); //give database time to fully update and settle
-                    await GetIngredients()
+                    await GetIngredients();
                 
                 }).then(console.log("Finished adding data to database."))
 
@@ -138,6 +188,134 @@ async function CreateIngredient() {
     {
         alert(alertmsg);
     }
+}
+
+async function UpdateIngredient()
+{
+        //checking for valid data
+        var invalid = false;
+        var alertmsg= "There were the Following Errors with your input data:\n";
+    
+    
+        var ServSize = parseFloat(ServingSize.value); //serving size converted to float
+        if(isNaN(ServSize))
+            ServSize=0;
+    
+        var cal = parseInt(Calories.value);
+        if(isNaN(cal))
+            cal=0;
+    
+        var fat = parseInt(Fat.value);
+        if(isNaN(fat))
+            fat=0;
+    
+        var cholesterol = parseInt(Cholesterol.value);
+        if(isNaN(cholesterol))
+            cholesterol=0;
+    
+        var sodium = parseInt(Sodium.value);
+        if(isNaN(sodium))
+            sodium=0;
+    
+        var carbs = parseInt(Carbs.value);
+        if(isNaN(carbs))
+            carbs=0;
+    
+        var protein = parseInt(Protein.value);
+        if(isNaN(protein))
+            protein=0;
+    
+        if (IngName.value == "") {
+            //display error message for name needing to not be blank
+            invalid = true;
+            alertmsg += "Name Must Not be Blank\n";
+        }
+        if(ServSize <= 0)
+        {
+            //display error message for serving size needing to be number > 0
+            invalid = true;
+            alertmsg += "Serving size must be greater than 0\n";
+        }
+        if(cal < 0)
+        {
+            //display error message for negative calorie number
+            invalid = true;
+            alertmsg += "Calorie Count must not be negative\n";
+        }
+        if(fat < 0)
+        {
+            invalid = true;
+            alertmsg += "Fat must not be negative\n";
+        }
+        if(cholesterol < 0)
+        {
+            invalid = true;
+            alertmsg += "Cholesterol must not be negative\n";
+        }
+        if(sodium < 0)
+        {
+            invalid = true;
+            alertmsg += "Sodium must not be negative\n";
+        }
+        if(carbs < 0)
+        {
+            invalid = true;
+            alertmsg += "Carbs must not be negative\n";
+        }
+        if(protein < 0)
+        {
+            invalid = true;
+            alertmsg += "Protein must not be negative\n";
+        }
+    
+        if(!invalid)
+        {
+            fetch(`http://localhost:5500/searchIngredient?search=${IngName.value}`)
+            .then(response => {
+                if(response.ok)
+                {
+                    //console.log("was able to query");
+                    return response.json()
+                }
+                else
+                    throw new Error('Problem checking database to see if Ingredient Exists');
+            })
+            .then(async (ingredient) => {
+                console.log(ingredient);
+                if (ingredient.length == 0) //if there was something in the database with that name already
+                {
+                    throw new Error("Ingredient Doesn't exist in the database!\n Please check your name and try again!\n(or click Create Ingredient to add to database!");
+                }
+                else {
+                    fetch(`http://localhost:5500/UpdateIng?name=${IngName.value}&servingsize=${ServSize}&calories=${cal}&fat=${fat}&cholesterol=${cholesterol}&sodium=${sodium}&carbs=${carbs}&protein=${protein}`)
+                    .then(async() => {
+                        setTimeout(()=>{},1000); //give database time to fully update and settle
+                        await GetIngredients()
+                        DisplayIng();
+                    }).then(console.log("Finished updating in database."))
+    
+                    //make fetch request for inserting into database
+                }
+            })
+            .catch(err => alert(err));
+        }
+        else
+        {
+            alert(alertmsg);
+        }
+}
+
+async function FillIngredientData()
+{
+    IngName.value = DisplayedIngName.innerHTML;
+
+    ServingSize.value = DisplayedServingSize.innerHTML
+    Calories.value = DisplayedCalories.innerHTML
+    Fat.value = DisplayedFat.innerHTML
+    Cholesterol.value = DisplayedCholesterol.innerHTML
+    Sodium.value = DisplayedSodium.innerHTML
+    Carbs.value = DisplayedCarbs.innerHTML
+    Protein.value = DisplayedProtein.innerHTML
 }
 
 async function GetIngredients()
@@ -199,11 +377,6 @@ async function DeleteIngredient()
 
 
 }
-
-
-
-
-
 
 
 

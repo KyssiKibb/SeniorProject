@@ -6,61 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counter App</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link href="../MultiSelect/lou-multi-select-57fb8d3/css/multi-select.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../MultiSelect/lou-multi-select-57fb8d3/js/jquery.multi-select.js"></script>
+    <script type="text/javascript" src="../js/navigation.js"></script>
     <script type="text/javascript" src="../js/ingredient.js" defer></script>
     <script type="text/javascript" src="../js/meal.js" defer></script>
 </head>
 <body>
     <div align="center" style="margin-bottom: 50px;">
         <!-- <button class="button">Home</button> -->
-        <button class="button">Home</button>
-        <button class="button">Recipes</button>
-        <button class="button">Graphs</button>
-        <button class="button">Settings</button>
+        <button class="button" onclick="NavHome()">Home</button>
+        <button class="button" onclick="NavIngredients()">Ingredients</button>
+        <button class="button" onclick="NavGraphs()">Graphs</button>
+        <button class="button" onclick="NavSettings()">Settings</button>
     </div>
-    <div align="right">
-        
+    <div style="float:left; width:50%">
+    
+    
+        <h5>Required:</h5>
+    
+        <label for="mealName">Name of Meal:</label>
+        <input type="text" id="mealName" value="" placeholder="Type Name Here" required><br><br>
+        <label for="mealServing">Serving Size of Meal: </label>
+        <input type="number" id="mealServing" placeholder="0" step=".01" required><br><br>
+        <div>
+            <label for="SelectIngredList">List of Ingredients: <a style="margin-left: 80px"> Selected: </a></label>
+    
+        </div>
+        <div>
+            <select class="MealIngList" id="SelectIngredList" name="ing-select[]" multiple="multiple">
+                <option class="disabledClass" value="" selected disabled hidden>Hidden</option>
+            </select>
+    
+        </div>
+    
+        <button onclick="AddSelectedIngredients()">Add Selected Ingredient(s)</button><br>
+    
+        <div>
+            <label for="SelectedIngredList">Selected Ingredient(s)</label>
+        </div>
+        <div class="PageContainer">
+            <div class="MealSelectedIngredient" id="FinalizedSelectedIngredients">
+            </div>
+    
+            <div class=".MealSelectedIngredientServings" id="FinalizedSelectedIngredientServings">
+            </div>
+    
+        </div>
+        <label></label>
+        <button onclick="RemoveSelectedIngredients()">Remove Checked Ingredient(s)</button>
+    
+        <br><br><br>
+        <button onclick="CreateMeal()">Create Meal</button>
+        <button onclick="DeleteMeal()">Delete Selected Meal</button>
+    
+        <div>
+            <label for="MealList">List of Meals</label>
+        </div>
+        <div>
+            <select class="IngList" id="MealList" size="10" onchange="DisplayMeal()">
+                <option value="" selected disabled hidden>Select Delete</option>
+            </select>
+        </div>
+    
+    
     </div>
-    <h5>Required:</h5>
 
-    <label for="mealName">Name of Meal:</label>
-    <input type="text" id="mealName" name="mealName" value="" placeholder="Type Name Here" required><br><br>
-
-    <div>
-        <label for="IngredList">List of Ingredients</label>
+    <!-- this is the right half of the screen -->
+    <div style="float:left; width:50%; outline: 2px solid rgb(170, 127, 46)">
+        <div>
+            <h4>Meal Name: <h4 id="DisplayedMealName" style="display:inline"></h4></h4>
+            <h4>Meal Serving Size: <h4 id="DisplayedMealServ"></h4> </h4>
+            <h4>Meal Calories: <h4 id="DisplayedMealCal"></h4></h4>
+            <h4>Meal Fat: <h4 id="DisplayedMealFat"></h4></h4>
+            <h4>Meal Cholesterol: <h4 id="DisplayedMealChol"></h4></h4>
+            <h4>Meal Sodium: <h4 id="DisplayedMealSodi"></h4></h4>
+            <h4>Meal Carbs: <h4 id="DisplayedMealCarb"></h4></h4>
+            <h4>Meal Protein: <h4 id="DisplayedMealProt"></h4></h4>
+        </div>
     </div>
-    <div>
-        <select class="IngList" id="IngredList" size="10" multiple>
-            <option value="" selected disabled hidden>Select Delete</option>
-        </select>
-    </div>
-
-    <button onclick="AddSelectedIngredients()">Add Ingredient(s)</button>
-
-    <div>
-        <label for="SelectedIngredList">Selected Ingredient(s)</label>
-    </div>
-    <div>
-        <select class="IngList" id="SelectedIngredList" size="10" multiple>
-            <option value="" selected disabled hidden>Select Delete</option>
-        </select>
-    </div>
-
-    <button onclick="">Remove Ingredient(s)</button>
-
-
-    <div>
-        <label for="MealList">List of Meals</label>
-    </div>
-    <div>
-        <select class="IngList" id="MealList" size="10" multiple>
-            <option value="" selected disabled hidden>Select Delete</option>
-        </select>
-    </div>
-
-    <button onclick="">Get Specified Meal</button>
-    <button onclick="" >Create Meal</button>
-    <button onclick="">Pull Meals From Database</button>
-    <button onclick="">Delete Selected Meal</button>
-
+    <!-- <select class="MealIngList" id="IngredList" name="ing-select[]" multiple="multiple" style="visibility:hidden">
+        <option class="disabledClass" value="" selected disabled hidden>Hidden</option>
+    </select> -->
 </body>
 </html>

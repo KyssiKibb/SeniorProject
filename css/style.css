@@ -28,3 +28,43 @@
         font-size:larger;
         
     }
+
+.MealIngList {
+    background-color: burlywood;
+    font-size:larger;
+}
+
+.PageContainer {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display:flex;
+}
+
+.IngredientCreation {
+    float:left;
+    width: 50%;
+    background-color: burlywood;
+    outline: 5px solid rgb(170, 127, 46)
+}
+
+.IngredientDisplay {
+    float:left;
+    width: 50%;
+    background-color: burlywood;
+    outline: 2px solid rgb(170, 127, 46)
+}
+
+.MealSelectedIngredient {
+    float:left;
+    width: 30%;
+    background-color: burlywood;
+    outline: 2px solid rgb(170, 127, 46)
+}
+
+.MealSelectedIngredientServings {
+    float:left;
+    width: 50%;
+    background-color: burlywood;
+    outline: 2px solid rgb(170, 127, 46)
+}
