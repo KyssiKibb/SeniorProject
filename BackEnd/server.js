@@ -13,7 +13,7 @@ app.get('/', (req, res) =>{
 
 app.get('/searchIngredient', async (req,res) => {
     //console.log("we in here");
-    console.log(`Searching for: ${req.query.search}`);
+    //console.log(`Searching for: ${req.query.search}`);
     const result = await db.QueryIng(req.query.search);
     //console.log(`What we Got: ${result}`);
     res.json(result);
@@ -133,6 +133,65 @@ app.get('/DeleteMeal', async(req, res) => {
     res.json(result);
 })
 
+app.get('/ChangeDaily', async(req, res) => {
+    param = req.query;
+    var meal = [];
+    meal.push(param.meal1);
+    meal.push(param.meal2);
+    meal.push(param.meal3);
+    meal.push(param.meal4);
+    meal.push(param.meal5);
+    meal.push(param.meal6);
+    meal.push(param.meal7);
+    meal.push(param.meal8);
+    meal.push(param.meal9);
+    meal.push(param.meal10);
+    var serv = [];
+    serv.push(param.meal1serving);
+    serv.push(param.meal2serving);
+    serv.push(param.meal3serving);
+    serv.push(param.meal4serving);
+    serv.push(param.meal5serving);
+    serv.push(param.meal6serving);
+    serv.push(param.meal7serving);
+    serv.push(param.meal8serving);
+    serv.push(param.meal9serving);
+    serv.push(param.meal10serving);
+
+    var meals = [];
+    var mealservings = [];
+    var stop = false;
+    var i=0;
+    while(i < 10 && !stop)
+    {
+        if(meal[i] == "placeholder") //it isn't actual data
+        {
+            stop = true;
+        }
+        else
+        {
+            meal[i] = meal[i].replace('_',' ');
+            meals.push(meal[i]);
+            mealservings.push(serv[i]);
+            ++i;
+        }
+    }
+    console.log(meals);
+    const result = await db.UpdateDaily(param.date, meals, mealservings);
+    res.json(result);
+})
+
+app.get('/CreateDaily', async(req,res) => {
+    const result = await db.CreateDaily(req.query.search);
+    res.json(result);
+})
+
+app.get('/GetDaily', async(req,res) => {
+    const result = await db.GetDaily(req.query.search);
+    //console.log(result);
+    
+    res.json(result);
+})
 
 app.listen(5500, () => console.log('Listening on port 5500'));
 
@@ -146,13 +205,13 @@ app.listen(5500, () => console.log('Listening on port 5500'));
 //             console.log(res[i].name);
 //         }
 //     });
-db.GetMeals().then(res => {
-        for(var i =0; i < res.length; ++i)
-        {
-            console.log("meal " + i);
-            console.log(res[i].name);
-        }
-})
+// db.GetMeals().then(res => {
+//         for(var i =0; i < res.length; ++i)
+//         {
+//             //console.log("meal " + i);
+//             //console.log(res[i].name);
+//         }
+// })
 
 // app.listen(8080, () => {
 //     console.log("server is listening on port 8080");

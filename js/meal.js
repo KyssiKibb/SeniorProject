@@ -150,12 +150,12 @@ async function CreateMeal()
                         .then(response => response.json())
                         .then(ingredient => {
                             const servmultiplier = serv /ingredient[0].servingsize;
-                            calories += servmultiplier * ingredient[0].calories;
-                            fat += servmultiplier * ingredient[0].fat;
-                            cholesterol += servmultiplier * ingredient[0].cholesterol;
-                            sodium += servmultiplier * ingredient[0].sodium;
-                            carbs += servmultiplier * ingredient[0].carbs;
-                            protein += servmultiplier * ingredient[0].protein;
+                            calories += Math.floor(servmultiplier * ingredient[0].calories);
+                            fat += Math.floor(servmultiplier * ingredient[0].fat);
+                            cholesterol += Math.floor(servmultiplier * ingredient[0].cholesterol);
+                            sodium += Math.floor(servmultiplier * ingredient[0].sodium);
+                            carbs += Math.floor(servmultiplier * ingredient[0].carbs);
+                            protein += Math.floor(servmultiplier * ingredient[0].protein);
                             console.log("calories: ");
                             console.log(calories);
                         })
@@ -270,53 +270,61 @@ function AddSelectedIngredients()
     console.log("AddSelectedIngredients start");
     console.log("after showing length");
     var EndOfSelected = 1; //starts at 1
-    while(document.getElementById(`IngredientLabel${EndOfSelected}`).innerHTML != "placeholder")
+    while(EndOfSelected < 21 && document.getElementById(`IngredientLabel${EndOfSelected}`).innerHTML != "placeholder")
     {
         EndOfSelected++;
     }//get to end of what is currently
 
-    for(var i = 0; i < ListOfSelectedIngredients.length; ++i) //all of the newly selected stuff
+    if(EndOfSelected == 21)
     {
-        var found = false;
-        var j = 0;
-        while(j < ListOfFinalizedSelectedIngredients.length && !found)
-        {
-            if(ListOfSelectedIngredients[i] == ListOfFinalizedSelectedIngredients[j])
-            {
-                console.log("found an instance of:");
-                console.log(ListOfSelectedIngredients);
-                found = true;
-            }
-            j++;
-        }
-        if(!found) //not a duplicate so it's safe to add
-        {
-            if(EndOfSelected < 21) //size limitation on adding ingredients
-            {
-                ListOfFinalizedSelectedIngredients[ListOfFinalizedSelectedIngredients.length] = ListOfSelectedIngredients[i];
-                const newest = document.getElementById(`Ingredient${EndOfSelected}`);
-                const newestLabel = document.getElementById(`IngredientLabel${EndOfSelected}`);
-                newestLabel.innerHTML = ListOfSelectedIngredients[i];
-                newestLabel.style.display = "inline";
-                newest.style.display = "inline";
-
-                const newestServing = document.getElementById(`Ingredient${EndOfSelected}Serving`);
-                const newestServingLabel = document.getElementById(`IngredientServingLabel${EndOfSelected}`);
-                newestServing.style.display = "inline";
-                newestServingLabel.innerHTML = " " + ListOfSelectedIngredients[i] + " Serving: ";
-                newestServingLabel.style.display= "inline";
-
-
-
-                EndOfSelected++; //move to next open space
-            }
-        }
+        alert("limit of 20 ingredients");
     }
-    console.log("Final Ingredients");
-    console.log(ListOfFinalizedSelectedIngredients);
-    ListOfSelectedIngredients = [];
-    $('#SelectIngredList').multiSelect('deselect_all');
-    console.log();
+    else
+    {
+        for(var i = 0; i < ListOfSelectedIngredients.length; ++i) //all of the newly selected stuff
+        {
+            var found = false;
+            var j = 0;
+            while(j < ListOfFinalizedSelectedIngredients.length && !found)
+            {
+                if(ListOfSelectedIngredients[i] == ListOfFinalizedSelectedIngredients[j])
+                {
+                    console.log("found an instance of:");
+                    console.log(ListOfSelectedIngredients);
+                    found = true;
+                }
+                j++;
+            }
+            if(!found) //not a duplicate so it's safe to add
+            {
+                if(EndOfSelected < 21) //size limitation on adding ingredients
+                {
+                    ListOfFinalizedSelectedIngredients[ListOfFinalizedSelectedIngredients.length] = ListOfSelectedIngredients[i];
+                    const newest = document.getElementById(`Ingredient${EndOfSelected}`);
+                    const newestLabel = document.getElementById(`IngredientLabel${EndOfSelected}`);
+                    newestLabel.innerHTML = ListOfSelectedIngredients[i];
+                    newestLabel.style.display = "inline";
+                    newest.style.display = "inline";
+    
+                    const newestServing = document.getElementById(`Ingredient${EndOfSelected}Serving`);
+                    const newestServingLabel = document.getElementById(`IngredientServingLabel${EndOfSelected}`);
+                    newestServing.style.display = "inline";
+                    newestServingLabel.innerHTML = " " + ListOfSelectedIngredients[i] + " Serving: ";
+                    newestServingLabel.style.display= "inline";
+    
+    
+    
+                    EndOfSelected++; //move to next open space
+                }
+            }
+        }
+        console.log("Final Ingredients");
+        console.log(ListOfFinalizedSelectedIngredients);
+        ListOfSelectedIngredients = [];
+        $('#SelectIngredList').multiSelect('deselect_all');
+        console.log();
+    }
+
 }
 
 function RemoveSelectedIngredients()

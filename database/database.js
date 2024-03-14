@@ -2,7 +2,8 @@
 const ProjName = "seniorproject-414021";
 const datasetId = "SeniorProj";
 const MealsTableID = "meals_table";
-const IngredientTableID = "ingredients_table"
+const IngredientTableID = "ingredients_table";
+const DailyMealID = "daily_meals_table";
 // Import the Google Cloud client library and create a client
 const { BigQuery } = require('@google-cloud/bigquery');
 const bigquery = new BigQuery();
@@ -36,56 +37,30 @@ async function createTable() {
    * TODO(developer): Uncomment the following lines before running the sample.
    */
   // const datasetId = "my_dataset";
-  const tableId = "meals_table";
+  const tableId = "daily_meals_table";
   const schema = [
-    { name: 'name', type: 'STRING' },
-    { name: 'servingsize', type: 'FLOAT' },
-    { name: 'calories', type: 'INTEGER' },
-    { name: 'fat', type: 'INTEGER' },
-    { name: 'cholesterol', type: 'INTEGER' },
-    { name: 'sodium', type: 'INTEGER' },
-    { name: 'carbs', type: 'INTEGER' },
-    { name: 'protein', type: 'INTEGER' },
-    { name: 'ing1', type: 'STRING' },
-    { name: 'ing1serving', type: 'FLOAT' },
-    { name: 'ing2', type: 'STRING' },
-    { name: 'ing2serving', type: 'FLOAT' },
-    { name: 'ing3', type: 'STRING' },
-    { name: 'ing3serving', type: 'FLOAT' },
-    { name: 'ing4', type: 'STRING' },
-    { name: 'ing4serving', type: 'FLOAT' },
-    { name: 'ing5', type: 'STRING' },
-    { name: 'ing5serving', type: 'FLOAT' },
-    { name: 'ing6', type: 'STRING' },
-    { name: 'ing6serving', type: 'FLOAT' },
-    { name: 'ing7', type: 'STRING' },
-    { name: 'ing7serving', type: 'FLOAT' },
-    { name: 'ing8', type: 'STRING' },
-    { name: 'ing8serving', type: 'FLOAT' },
-    { name: 'ing9', type: 'STRING' },
-    { name: 'ing9serving', type: 'FLOAT' },
-    { name: 'ing10', type: 'STRING' },
-    { name: 'ing10serving', type: 'FLOAT' },
-    { name: 'ing11', type: 'STRING' },
-    { name: 'ing11serving', type: 'FLOAT' },
-    { name: 'ing12', type: 'STRING' },
-    { name: 'ing12serving', type: 'FLOAT' },
-    { name: 'ing13', type: 'STRING' },
-    { name: 'ing13serving', type: 'FLOAT' },
-    { name: 'ing14', type: 'STRING' },
-    { name: 'ing14serving', type: 'FLOAT' },
-    { name: 'ing15', type: 'STRING' },
-    { name: 'ing15serving', type: 'FLOAT' },
-    { name: 'ing16', type: 'STRING' },
-    { name: 'ing16serving', type: 'FLOAT' },
-    { name: 'ing17', type: 'STRING' },
-    { name: 'ing17serving', type: 'FLOAT' },
-    { name: 'ing18', type: 'STRING' },
-    { name: 'ing18serving', type: 'FLOAT' },
-    { name: 'ing19', type: 'STRING' },
-    { name: 'ing19serving', type: 'FLOAT' },
-    { name: 'ing20', type: 'STRING' },
-    { name: 'ing20serving', type: 'FLOAT' },
+    { name: 'Date', type: 'STRING' },
+    { name: 'meal1', type: 'STRING' },
+    { name: 'meal1serving', type: 'FLOAT64'},
+    { name: 'meal2', type: 'STRING' },
+    { name: 'meal2serving', type: 'FLOAT64'},
+    { name: 'meal3', type: 'STRING' },
+    { name: 'meal3serving', type: 'FLOAT64'},
+    { name: 'meal4', type: 'STRING' },
+    { name: 'meal4serving', type: 'FLOAT64'},
+    { name: 'meal5', type: 'STRING' },
+    { name: 'meal5serving', type: 'FLOAT64'},
+    { name: 'meal6', type: 'STRING' },
+    { name: 'meal6serving', type: 'FLOAT64'},
+    { name: 'meal7', type: 'STRING' },
+    { name: 'meal7serving', type: 'FLOAT64'},
+    { name: 'meal8', type: 'STRING' },
+    { name: 'meal8serving', type: 'FLOAT64'},
+    { name: 'meal9', type: 'STRING' },
+    { name: 'meal9serving', type: 'FLOAT64'},
+    { name: 'meal10', type: 'STRING' },
+    { name: 'meal10serving', type: 'FLOAT64'},
+
   ]
   // For all options, see https://cloud.google.com/bigquery/docs/reference/v2/tables#resource
   const options = {
@@ -184,6 +159,30 @@ class A{
     // rows.forEach(row => console.log(row.name));
     return rows;
   }
+
+  async GetDaily(date)
+  {
+    const queryString = `SELECT * FROM \`${ProjName}.${datasetId}.${DailyMealID}\` WHERE Date='${date}' LIMIT 1`;
+
+    const options = {
+      query: queryString,
+      location: 'US',
+    };
+  
+    // Run the query as a job
+    const [job] = await bigquery.createQueryJob(options);
+    //console.log(`Job ${job.id} started.`);
+  
+    // Wait for the query to finish
+    const [rows] = await job.getQueryResults();
+  
+    // Print the results
+    // console.log('Rows:');
+    // rows.forEach(row => console.log(row.name));
+    return rows;    
+  }
+
+
 
 
   async DeleteIngredient(name) {
@@ -285,6 +284,33 @@ class A{
     return rows;
   }
 
+  async CreateDaily(date)
+  {
+    var queryString = `INSERT INTO \`${ProjName}.${datasetId}.${DailyMealID}\` VALUES('${date}'`;
+    for(var i = 0; i < 10; ++i)
+    {
+      queryString += `,NULL,NULL`;
+    }
+    queryString += ',NULL)';//final null is Notes
+
+    const options = {
+      query: queryString,
+      location: 'US',
+    };
+  
+    // Run the query as a job
+    const [job] = await bigquery.createQueryJob(options);
+    //console.log(`Job ${job.id} started.`);
+  
+    // Wait for the query to finish
+    const [rows] = await job.getQueryResults();
+  
+    // Print the results
+    // console.log('Rows:');
+    // rows.forEach(row => console.log(row.name));
+    return rows;
+  }
+
   async UpdateIngredient(name, servingsize, calories, fat=0,cholesterol=0,sodium=0,carbs=0,protein=0)
   {
     const queryString = `UPDATE \`${ProjName}.${datasetId}.${IngredientTableID}\` SET servingsize=${servingsize},calories=${calories},fat=${fat},cholesterol=${cholesterol},sodium=${sodium},carbs=${carbs},protein=${protein} WHERE name='${name}'`;
@@ -306,9 +332,52 @@ class A{
     // rows.forEach(row => console.log(row.name));
     return rows;
   }
+
+  async UpdateDaily(date, meals, servings)
+  {
+      var queryString = `UPDATE \`${ProjName}.${datasetId}.${DailyMealID}\` SET `;
+
+      console.log(meals.length)
+      for(var i= 0; i < meals.length; ++i)
+      {
+        if(i==0)
+          queryString += `meal${i+1}='${meals[i]}', meal${i+1}serving=${servings[i]}`;
+        else
+          queryString += `,meal${i+1}='${meals[i]}', meal${i+1}serving=${servings[i]}`;
+        //console.log(queryString);
+      }
+      for(var i= meals.length; i < 10; ++i)//stragglers
+      {
+        if(i==0)
+          queryString += `meal${i+1}=NULL, meal${i+1}serving=NULL`;
+        else
+          queryString += `,meal${i+1}=NULL, meal${i+1}serving=NULL`;
+      }
+
+      queryString += ` WHERE Date='${date}' `;
+    
+      const options = {
+        query: queryString,
+        location: 'US',
+      };
+    
+      // Run the query as a job
+      const [job] = await bigquery.createQueryJob(options);
+      //console.log(`Job ${job.id} started.`);
+    
+      // Wait for the query to finish
+      const [rows] = await job.getQueryResults();
+    
+      // Print the results
+      // console.log('Rows:');
+      // rows.forEach(row => console.log(row.name));
+      return rows;
+  }
+
 }
 
 //console.log("blah");
 //QueryIng("potato");
 //createTable();
+
 module.exports = {A};

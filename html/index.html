@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Counter App</title>
     <link rel="stylesheet" href="../css/style.css">
-    <script type="text/javascript" src="../js/navigation.js"></script>
+    <link href="../MultiSelect/lou-multi-select-57fb8d3/css/multi-select.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../MultiSelect/lou-multi-select-57fb8d3/js/jquery.multi-select.js"></script>
+    <script type="text/javascript" src="../js/navigation.js" defer></script>
+    <script type="text/javascript" src="../js/ingredient.js" defer></script>
+    <script type="text/javascript" src="../js/meal.js" defer></script>
+    <script type="text/javascript" src="../js/index.js" defer></script>
+
+    
 </head>
 <body>
     <div align="center" style="margin-bottom: 50px;">
@@ -19,30 +27,46 @@
     <div align="center">
         <h1>Home Page</h1>
     </div>
-    <div align="center">
-        <image src="css/graph.png" width="500" height="500">
-        
-    </div>
     <div align="center" style="margin-bottom: 50px;">
+        <div>
+            <label for="MealList">List of Meals</label>
+        </div>
+        <div>
+            <select class="IngList" id="MealList" size="10">
+                <option value="" selected disabled hidden>Select Delete</option>
+            </select>
+        </div> 
+        <div>
+            <button onclick="AddToMealOfDay()">Add Selected Meal to Day</button>
+        </div><br><br><br>
         <h1>Meals of the day</h1>
-        <table>
-            <tr>
-                <th>Breakfast: </th>
-                <th>random meal</th>
-            </tr>
-            <tr>
-                <th>Lunch: </th>
-                <th>random meal</th>
-            </tr>
-            <tr>
-                <th>Dinner: </th>
-                <th>random meal</th>
-            </tr>
-        </table>
+        <div class="PageContainer">
+            <div class="MealsOfTheDay" id="ListOfDaysMeals">
+            </div>
+    
+            <div class="MealSelectedIngredientServings" id="FinalizedMealsOfTheDayServings">
+            </div>
+    
+        </div>
+        <div>
+            <button onclick="RemoveSelectedMeals()">Remove Checked Meals</button>
+            <button onclick="UpdateMealsOfDay()">Save Meals of Day</button>
+        </div>
+
     </div>
+
+
+
+
     <div align="center">
         <label>Some notes about today:</label>
         <input type="text" title="Some notes about today">
+
+
     </div>
+    <div align="center">
+        <button onclick="SaveNote()" >Save today's notes</button>
+    </div>
+
 </body>
 </html>
