@@ -28,7 +28,7 @@ async function createDataset() {
   console.log(`Dataset ${dataset.id} created.`);
 }
 //createDataset();
-console.log("blah");
+//console.log("blah");
 // create a table using code
 async function createTable() {
   // Creates a new table named "my_table" in "my_dataset".
@@ -291,7 +291,14 @@ class A{
     {
       queryString += `,NULL,NULL`;
     }
-    queryString += ',NULL)';//final null is Notes
+    queryString += ',NULL';//final null is Notes
+    for(var i = 0; i < 6; i++)
+    {
+      queryString += ',0';
+    }
+    queryString += ')';
+
+
 
     const options = {
       query: queryString,
@@ -333,7 +340,7 @@ class A{
     return rows;
   }
 
-  async UpdateDaily(date, meals, servings)
+  async UpdateDaily(date, meals, servings,calories,fat,cholesterol,sodium,carbs,protein)
   {
       var queryString = `UPDATE \`${ProjName}.${datasetId}.${DailyMealID}\` SET `;
 
@@ -353,6 +360,9 @@ class A{
         else
           queryString += `,meal${i+1}=NULL, meal${i+1}serving=NULL`;
       }
+      queryString += `,calories=${calories}, fat=${fat}, cholesterol=${cholesterol}, sodium=${sodium}, carbs=${carbs}, protein=${protein}`
+
+
 
       queryString += ` WHERE Date='${date}' `;
     

@@ -12,20 +12,14 @@ app.get('/', (req, res) =>{
 });
 
 app.get('/searchIngredient', async (req,res) => {
-    //console.log("we in here");
-    //console.log(`Searching for: ${req.query.search}`);
     const result = await db.QueryIng(req.query.search);
-    //console.log(`What we Got: ${result}`);
     res.json(result);
 });
 app.get('/AllIngredients', async (req,res) => {
-    //console.log("we in here");
     const result = await db.GetIngredients();
     res.json(result);
-    //console.log(res);
 });
 app.get('/DeleteIng', async(req, res) => {
-    //console.log(req.query.search);
     const result = await db.DeleteIngredient(req.query.search);
     res.json(result);
 })
@@ -48,8 +42,6 @@ app.get('/UpdateIng', async(req, res) => {
 })
 
 app.get('/GetMeals', async (req,res) => {
-    //console.log("we in here");
-    //console.log(req.query.search);
     const result = await db.GetMeals();
     res.json(result);
 });
@@ -120,15 +112,12 @@ app.get('/CreateMeal', async (req,res) => {
         }
     }
 
-    // console.log(ingr);
-    // console.log(serv);
     const result = await db.CreateMeal(param.name, param.servingsize,
         param.calories, param.fat, param.cholesterol,
         param.sodium, param.carbs, param.protein, ingredients, ingredientservings);
     res.json(param);
 });
 app.get('/DeleteMeal', async(req, res) => {
-    //console.log(req.query.search);
     const result = await db.DeleteMeal(req.query.search);
     res.json(result);
 })
@@ -176,8 +165,36 @@ app.get('/ChangeDaily', async(req, res) => {
             ++i;
         }
     }
-    console.log(meals);
-    const result = await db.UpdateDaily(param.date, meals, mealservings);
+    var calories = 0;
+    var fat = 0;
+    var cholesterol = 0;
+    var sodium = 0;
+    var carbs = 0;
+    var protein = 0;
+    for(var j = 0; j < i; ++j)
+    {
+        const mealres = await db.GetMeal(meal[j]);
+        const CAL = Math.floor(mealres[0].calories * mealservings[j]);
+        if(!isNaN(CAL))
+            calories += CAL;
+        const FAT = Math.floor(mealres[0].fat * mealservings[j]);
+        if(!isNaN(FAT))
+            fat += FAT;
+        const CHOL = Math.floor(mealres[0].cholesterol * mealservings[j]);
+        if(!isNaN(CHOL))
+            cholesterol += CHOL;
+        const SOD = Math.floor(mealres[0].sodium * mealservings[j]);
+        if(!isNaN(SOD))
+            sodium += SOD;
+        const CARB = Math.floor(mealres[0].carbs * mealservings[j]);
+        if(!isNaN(CARB))
+            carbs += CARB;
+        const PROT = Math.floor(mealres[0].protein * mealservings[j]);
+        if(!isNaN(PROT))
+            protein += PROT;
+    }
+
+    const result = await db.UpdateDaily(param.date, meals, mealservings,calories,fat,cholesterol,sodium,carbs,protein);
     res.json(result);
 })
 
@@ -188,31 +205,8 @@ app.get('/CreateDaily', async(req,res) => {
 
 app.get('/GetDaily', async(req,res) => {
     const result = await db.GetDaily(req.query.search);
-    //console.log(result);
-    
+
     res.json(result);
 })
 
 app.listen(5500, () => console.log('Listening on port 5500'));
-
-// import express from 'express';
-
-// const app = express();
-// db.GetIngredients().then(res => {
-//         for(var i =0; i < res.length; ++i)
-//         {
-//             console.log("ingredient" + i);
-//             console.log(res[i].name);
-//         }
-//     });
-// db.GetMeals().then(res => {
-//         for(var i =0; i < res.length; ++i)
-//         {
-//             //console.log("meal " + i);
-//             //console.log(res[i].name);
-//         }
-// })
-
-// app.listen(8080, () => {
-//     console.log("server is listening on port 8080");
-// });

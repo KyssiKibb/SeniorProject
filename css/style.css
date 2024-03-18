@@ -61,6 +61,12 @@
     background-color: burlywood;
     outline: 2px solid rgb(170, 127, 46)
 }
+.MealsOfTheDay {
+    float:left;
+    width: 50%;
+    background-color: burlywood;
+    outline: 2px solid rgb(170, 127, 46)
+}
 
 .MealSelectedIngredientServings {
     float:left;
